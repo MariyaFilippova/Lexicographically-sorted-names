@@ -8,10 +8,18 @@ class Tree {
         names = n;
     }
 
+    boolean cycleInDirectedGraph() {
+        return false;
+    }
+
     void printAlphabet() {
+        if (cycleInDirectedGraph()) {
+            System.out.println("Impossible");
+            return;
+        }
         ArrayList<Character> alphabet = new ArrayList<>();
-        boolean[] visited =  new boolean[26];
-        this.topologicalSort(this.root, visited, alphabet);
+        boolean[] visited = new boolean[26];
+        topologicalSort(root, visited, alphabet);
         for (int i = alphabet.size() - 1; i >= 0; i--) {
             System.out.print(alphabet.get(i) + " ");
         }
@@ -27,58 +35,42 @@ class Tree {
             return;
         }
         visited[root.value - 'a'] = true;
-        for (int i = 0; i < root.children.length; i++) {
-            topologicalSort(root.children[i], visited, alphabet);
+        for (int i = 0; i < root.children.size(); i++) {
+            topologicalSort(root.children.get(i), visited, alphabet);
         }
         alphabet.add(root.value);
     }
 
-    private boolean addChildren(ArrayList<Character> list, char current) {
-        for (char ch : list) {
-            if (current == ch) {
-                continue;
-            }
-            if (Node.map.containsKey(current) && Node.map.get(current).children[ch - 'a'] != null) {
-                return false;
-            }
-            if (Node.map.containsKey(current)) {
-                Node.map.get(ch).children[current - 'a'] = Node.map.get(current);
-            }
-            else {
-                Node.map.get(ch).children[current - 'a'] = new Node(current);
-            }
-        }
-        list.add(current);
-        return true;
-    }
-
-    boolean build() {
+    void build() {
+        char prev = 0;
         if (this.root == null) {
             root = new Node(names[0].charAt(0));
+            prev = root.value;
         }
-        ArrayList<Character> list = new ArrayList<>();
-        list.add(root.value);
         for (int i = 0; i < names.length; i++) {
             char current = names[i].charAt(0);
-            if (!addChildren(list, current)) {
-                System.out.println("Imposible");
-                return false;
+            if (prev == current) {
+                continue;
+            }
+            if (Node.nodes.containsKey(current)) {
+                Node.nodes.get(prev).children.add(Node.nodes.get(current));
+            }
+            else {
+                Node.nodes.get(prev).children.add(new Node(current));
             }
         }
-        return true;
     }
-
 }
 
 
 class Node {
-    static Map<Character, Node> map = new HashMap<>();
+    static Map<Character, Node> nodes = new HashMap<>();
     Character value;
-    Node[] children;
+    ArrayList<Node> children;
 
     Node(Character character) {
         value = character;
-        map.put(character, this);
-        children = new Node[26];
+        nodes.put(character, this);
+        children = new ArrayList<>();
     }
 }

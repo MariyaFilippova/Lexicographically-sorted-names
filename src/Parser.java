@@ -1,7 +1,6 @@
 import java.util.Scanner;
 
 class Parser {
-
     static String[] parseInput() {
         Scanner scanner = new Scanner(System.in);
         int n = scanner.nextInt();
@@ -19,9 +18,7 @@ class Parser {
     public static void main(String[] args) {
         String[] names = Parser.parseInput();
         Tree tree = new Tree(names);
-        if (!tree.build()) {
-            return;
-        }
+        tree.build();
         tree.printAlphabet();
     }
 }
