@@ -19,6 +19,9 @@ class Parser {
     public static void main(String[] args) {
         String[] names = Parser.parseInput();
         Tree tree = new Tree(names);
-        tree.build();
+        if (!tree.build()) {
+            return;
+        }
+        tree.printAlphabet();
     }
 }
