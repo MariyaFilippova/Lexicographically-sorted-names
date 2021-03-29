@@ -17,8 +17,12 @@ class Parser {
 
     public static void main(String[] args) {
         String[] names = Parser.parseInput();
-        Tree tree = new Tree(names);
-        tree.build();
-        tree.printAlphabet();
+        Graph graph = new Graph();
+        graph.build(names);
+        Trie trie = new Trie();
+        for (int i = 0; i < names.length; i++) {
+            trie.insert(names[i], graph);
+        }
+        graph.printAlphabet();
     }
 }
