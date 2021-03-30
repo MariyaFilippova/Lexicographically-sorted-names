@@ -4,8 +4,7 @@ import java.util.Map;
 
 class Graph {
     Map<Character, Node> nodes = new HashMap<>();
-    ArrayList<Character> entryPointsOfConnectedComponents = new ArrayList<>();
-    int components;
+    private int components;
 
     int connectedComponents() {
         components = nodes.size();
@@ -21,7 +20,7 @@ class Graph {
         return components;
     }
 
-    void union(int[] parents, int v, int u) {
+    private void union(int[] parents, int v, int u) {
         int parent_first = findParent(parents, u);
         int parent_second = findParent(parents, v);
         if (parent_first != parent_second) {
@@ -30,14 +29,14 @@ class Graph {
         }
     }
 
-    int findParent(int[] parents, int v) {
+    private int findParent(int[] parents, int v) {
         if (parents[v] == v) {
             return v;
         }
         return parents[v] = findParent(parents, parents[v]);
     }
 
-    boolean cycleInDirectedGraph() {
+    private boolean cycleInDirectedGraph() {
         return false;
     }
 
@@ -48,10 +47,8 @@ class Graph {
         }
         ArrayList<Character> alphabet = new ArrayList<>();
         boolean[] visited = new boolean[26];
-        for (char root : this.entryPointsOfConnectedComponents) {
-            if (nodes.containsKey(root)) {
-                topologicalSort(nodes.get(root), visited, alphabet);
-            }
+        for (Node root : nodes.values()) {
+           topologicalSort(root, visited, alphabet);
         }
         for (int i = alphabet.size() - 1; i >= 0; i--) {
             System.out.print(alphabet.get(i) + " ");
