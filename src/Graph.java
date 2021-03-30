@@ -1,10 +1,43 @@
+import java.io.OutputStream;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
 class Graph {
     Map<Character, Node> nodes = new HashMap<>();
-    ArrayList<Node> entryPointsOfConnectedComponents = new ArrayList<>();
+    ArrayList<Character> entryPointsOfConnectedComponents = new ArrayList<>();
+    int components;
+
+    int connectedComponents() {
+        components = nodes.size();
+        int[] parents = new int[26];
+        for (int i = 0; i < parents.length; i++) {
+            parents[i] = i;
+        }
+        for (Map.Entry<Character, Node> node: nodes.entrySet()) {
+            for (Node child: node.getValue().children) {
+                union(parents, child.value - 'a', node.getKey() - 'a');
+            }
+        }
+        return components;
+    }
+
+    void union(int[] parents, int v, int u) {
+        int parent_first = findParent(parents, u);
+        int parent_second = findParent(parents, v);
+        if (parent_first != parent_second) {
+            components--;
+            parents[parent_first] = parent_second;
+        }
+    }
+
+    int findParent(int[] parents, int v) {
+        if (parents[v] == v) {
+            return v;
+        }
+        return parents[v] = findParent(parents, parents[v]);
+    }
 
     boolean cycleInDirectedGraph() {
         return false;
@@ -17,15 +50,17 @@ class Graph {
         }
         ArrayList<Character> alphabet = new ArrayList<>();
         boolean[] visited = new boolean[26];
-        for (Node root: this.entryPointsOfConnectedComponents) {
-            topologicalSort(root, visited, alphabet);
+        for (char root : this.entryPointsOfConnectedComponents) {
+            if (nodes.containsKey(root)) {
+                topologicalSort(nodes.get(root), visited, alphabet);
+            }
         }
         for (int i = alphabet.size() - 1; i >= 0; i--) {
             System.out.print(alphabet.get(i) + " ");
         }
         for (int i = 0; i < 26; i++) {
             if (!visited[i]) {
-                System.out.print((char)(i + 'a') + " ");
+                System.out.print((char) (i + 'a') + " ");
             }
         }
     }
