@@ -28,11 +28,11 @@ class Trie {
             char c = key.charAt(i);
             char ch = start.characterBefore;
             if (!graph.nodes.containsKey(c)) {
-                graph.nodes.put(c, new Graph.Node(c));
+                graph.nodes.put(c, new Node(c));
             }
             if (ch != 0 && ch != c) {
                 if (!graph.nodes.containsKey(ch)) {
-                    graph.nodes.put(ch, new Graph.Node(ch));
+                    graph.nodes.put(ch, new Node(ch));
                 }
                 graph.nodes.get(ch).children.add(graph.nodes.get(c));
             }
