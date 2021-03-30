@@ -93,4 +93,39 @@ public class TrieTest {
             System.out.println(ex.getMessage());
         }
     }
+
+    @Test
+    public void negativeResult() {
+        try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/names.txt")) {
+            Trie trie = new Trie();
+            Graph graph = new Graph();
+            String[] names = Parser.parseInput(readerNames);
+            for (int i = 0; i < names.length; i++) {
+                trie.insert(names[i], graph);
+            }
+            graph.printAlphabet();
+            assertEquals(testOut.toString(), "Impossible\n");
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
+    public void namesWithSamePrefix() {
+        try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/namesWithSamePrefix.txt")) {
+            Trie trie = new Trie();
+            Graph graph = new Graph();
+            String[] names = Parser.parseInput(readerNames);
+            for (int i = 0; i < names.length; i++) {
+                trie.insert(names[i], graph);
+            }
+            assertEquals(graph.nodes.size(), 11);
+            assertEquals(graph.connectedComponents(), 3);
+            graph.printAlphabet();
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+
 }
