@@ -1,8 +1,9 @@
+import java.io.InputStream;
 import java.util.Scanner;
 
 class Parser {
-    static String[] parseInput() {
-        Scanner scanner = new Scanner(System.in);
+    static String[] parseInput(final InputStream in) {
+        Scanner scanner = new Scanner(in);
         int n = scanner.nextInt();
         String[] names = new String[n];
         for (int i = 0; i < n; i++) {
@@ -16,7 +17,7 @@ class Parser {
     }
 
     public static void main(String[] args) {
-        String[] names = Parser.parseInput();
+        String[] names = Parser.parseInput(System.in);
         Graph graph = new Graph();
         Trie trie = new Trie();
         for (int i = 0; i < names.length; i++) {
