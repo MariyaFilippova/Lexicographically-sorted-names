@@ -1,11 +1,30 @@
-import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.Assertions;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.io.FileInputStream;
-import java.io.IOException;
+import java.io.*;
 import java.util.Scanner;
 
+import static org.junit.Assert.*;
+
 public class TrieTest {
+    private final InputStream systemIn = System.in;
+    private final PrintStream systemOut = System.out;
+
+    private ByteArrayOutputStream testOut;
+
+    @Before
+    public void setUpOutput() {
+        testOut = new ByteArrayOutputStream();
+        System.setOut(new PrintStream(testOut));
+    }
+
+    @After
+    public void restoreSystemInputOutput() {
+        System.setIn(systemIn);
+        System.setOut(systemOut);
+    }
+
     @Test
     public void checkParsingOfInput() {
         try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/names.txt");
@@ -17,7 +36,7 @@ public class TrieTest {
             for (int i = 0; i < n; i++) {
                 result[i] = scanner.next().toLowerCase();
             }
-            Assertions.assertArrayEquals(names, result);
+            assertArrayEquals(names, result);
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -40,7 +59,7 @@ public class TrieTest {
                 trie.insert(names[i], graph);
             }
             for (int i = 0; i < names.length; i++) {
-                Assertions.assertTrue(trie.search(result[i]));
+                assertTrue(trie.search(result[i]));
             }
 
         } catch (IOException ex) {
@@ -48,6 +67,30 @@ public class TrieTest {
         }
     }
 
+    @Test
+    public void namesWithDifferentFirstLetters() {
+        try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/differentFirstLetters.txt")) {
+            Scanner scanner = new Scanner(readerNames);
+            int n = scanner.nextInt();
+            String[] result = new String[n];
+            StringBuilder firstLetters = new StringBuilder();
+            for (int i = 0; i < n; i++) {
+                result[i] = scanner.next().toLowerCase();
+                firstLetters.append(result[i].charAt(0));
+                firstLetters.append(' ');
+            }
+            Graph graph = new Graph();
+            Trie trie = new Trie();
+            for (int i = 0; i < n; i++) {
+                trie.insert(result[i], graph);
+            }
 
-
+            assertEquals(graph.nodes.size(), n);
+            assertEquals(graph.connectedComponents(), 1);
+            graph.printAlphabet();
+            assertTrue(testOut.toString().contains(firstLetters.toString()));
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
 }
