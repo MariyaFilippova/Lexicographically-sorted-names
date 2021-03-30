@@ -40,14 +40,14 @@ class Graph {
         }
         alphabet.add(root.value);
     }
+}
 
-    static class Node {
-        Character value;
-        ArrayList<Node> children;
+class Node {
+    Character value;
+    ArrayList<Node> children;
 
-        Node(Character character) {
-            value = character;
-            children = new ArrayList<>();
-        }
+    Node(Character character) {
+        value = character;
+        children = new ArrayList<>();
     }
 }
