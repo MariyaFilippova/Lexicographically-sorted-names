@@ -1,7 +1,16 @@
+
 import java.io.InputStream;
 import java.util.Scanner;
 
-class Parser {
+/**
+ * An utility class that parses
+ * the input.
+ */
+final class Parser {
+
+    private Parser() {
+    }
+
     static String[] parseInput(final InputStream in) {
         Scanner scanner = new Scanner(in);
         int n = scanner.nextInt();

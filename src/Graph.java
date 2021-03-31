@@ -1,97 +1,169 @@
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 
-class Graph {
-    Map<Character, Node> nodes = new HashMap<>();
-    private int components;
 
+/**
+ * An object that stores information about the order of
+ * letters in the formed alphabet.
+ */
+class Graph {
+
+    /**
+     * Maps char to node in the graph.
+     */
+    private final Map<Character, Node> nodes;
+
+    public Map<Character, Node> getNodes() {
+        return nodes;
+    }
+
+    Graph() {
+        nodes = new HashMap<>();
+    }
+
+    /**
+     * @return the number of connected components in the graph.
+     */
     int connectedComponents() {
-        components = nodes.size();
-        int[] parents = new int[26];
+        int components = nodes.size();
+        int[] parents = new int[Constants.ALPHABET_SIZE];
         for (int i = 0; i < parents.length; i++) {
             parents[i] = i;
         }
-        for (Map.Entry<Character, Node> node: nodes.entrySet()) {
-            for (Node child: node.getValue().children) {
-                union(parents, child.value - 'a', node.getKey() - 'a');
+        for (Map.Entry<Character, Node> node : nodes.entrySet()) {
+            char value = node.getValue().getValue();
+            ArrayList<Node> children = node.getValue().getChildren();
+            for (Node child : children) {
+                int v = value - 'a';
+                int u = child.getValue() - 'a';
+                if (!union(parents, v, u)) {
+                    components--;
+                }
             }
         }
         return components;
     }
 
-    private void union(int[] parents, int v, int u) {
-        int parent_first = findParent(parents, u);
-        int parent_second = findParent(parents, v);
-        if (parent_first != parent_second) {
-            components--;
-            parents[parent_first] = parent_second;
+    /**
+     * Join two subsets into a single subset.
+     *
+     * @param parents array of ids of subsets.
+     * @param v       first subset.
+     * @param u       second subset.
+     * @return if the subsets are already connected.
+     */
+    private boolean union(int[] parents, int v, int u) {
+        int parentFirst = findParent(parents, u);
+        int parentSecond = findParent(parents, v);
+        if (parentFirst != parentSecond) {
+            parents[parentFirst] = parentSecond;
+            return false;
         }
+        return true;
     }
 
+    /**
+     * Determine which subset a particular node is in.
+     *
+     * @param parents array of ids.
+     * @param v       number of node.
+     * @return id of a subset.
+     */
     private int findParent(int[] parents, int v) {
         if (parents[v] == v) {
             return v;
         }
-        return parents[v] = findParent(parents, parents[v]);
+        parents[v] = findParent(parents, parents[v]);
+        return parents[v];
     }
 
-    private boolean cycleInDirectedGraph(Node root, boolean[] visited, boolean[] mark) {
-        if (mark[root.value - 'a']) {
+    /**
+     * Sort nodes in the connected component
+     * and determine if there is a cycle.
+     *
+     * @param root     node of the connected component.
+     * @param visited  marker that node was seen.
+     * @param color    shows that the node was entered.
+     * @param alphabet generated alphabet.
+     * @return if there is a cycle.
+     */
+    private boolean cycleInDirectedGraph(final Node root,
+                                         boolean[] visited,
+                                         boolean[] color,
+                                         final ArrayList<Character> alphabet) {
+        char value = root.getValue();
+        ArrayList<Node> children = root.getChildren();
+        if (color[value - 'a']) {
             return true;
         }
-        if (visited[root.value - 'a']) {
+        if (visited[value - 'a']) {
             return false;
         }
-        visited[root.value - 'a'] = true;
-        for (Node node: root.children) {
-            if (cycleInDirectedGraph(node, visited, mark) ) {
+        visited[value - 'a'] = true;
+        for (Node node : children) {
+            if (cycleInDirectedGraph(node, visited, color, alphabet)) {
                 return true;
             }
         }
-        mark[root.value - 'a'] = true;
+        alphabet.add(value);
+        color[value - 'a'] = true;
         return false;
     }
 
+    /**
+     * Prints the alphabet or a error message
+     * if it is impossible.
+     */
     void printAlphabet() {
+        boolean[] visited = new boolean[Constants.ALPHABET_SIZE];
+        ArrayList<Character> alphabet = new ArrayList<>();
         for (Node root : nodes.values()) {
-            if(cycleInDirectedGraph(root, new boolean[26], new boolean[26])) {
+            if (cycleInDirectedGraph(root, visited,
+                    new boolean[Constants.ALPHABET_SIZE],
+                    alphabet)) {
                 System.out.println("Impossible");
                 return;
             }
         }
-        ArrayList<Character> alphabet = new ArrayList<>();
-        boolean[] visited = new boolean[26];
-        for (Node root : nodes.values()) {
-           topologicalSort(root, visited, alphabet);
-        }
         for (int i = alphabet.size() - 1; i >= 0; i--) {
             System.out.print(alphabet.get(i) + " ");
         }
-        for (int i = 0; i < 26; i++) {
+        for (int i = 0; i < Constants.ALPHABET_SIZE; i++) {
             if (!visited[i]) {
                 System.out.print((char) (i + 'a') + " ");
             }
         }
     }
-
-    private void topologicalSort(Node root, boolean[] visited, ArrayList<Character> alphabet) {
-        if (root == null || visited[root.value - 'a']) {
-            return;
-        }
-        visited[root.value - 'a'] = true;
-        for (int i = 0; i < root.children.size(); i++) {
-            topologicalSort(root.children.get(i), visited, alphabet);
-        }
-        alphabet.add(root.value);
-    }
 }
 
+/**
+ * An object that represents a single letter.
+ */
 class Node {
-    Character value;
-    ArrayList<Node> children;
 
-    Node(Character character) {
+    /**
+     * Letter.
+     */
+    private final char value;
+
+    public char getValue() {
+        return value;
+    }
+
+    /**
+     * Nodes corresponding to the letters
+     * that should be after current
+     * in the generated alphabet.
+     */
+    private final ArrayList<Node> children;
+
+    public ArrayList<Node> getChildren() {
+        return children;
+    }
+
+    Node(char character) {
         value = character;
         children = new ArrayList<>();
     }
