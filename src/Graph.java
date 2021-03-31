@@ -121,8 +121,7 @@ class Graph {
         ArrayList<Character> alphabet = new ArrayList<>();
         for (Node root : nodes.values()) {
             if (cycleInDirectedGraph(root, new boolean[Constants.ALPHABET_SIZE],
-                    new boolean[Constants.ALPHABET_SIZE],
-                    alphabet)) {
+                                     new boolean[Constants.ALPHABET_SIZE], alphabet)) {
                 System.out.println("Impossible");
                 return;
             }
