@@ -19,7 +19,7 @@ final class Parser {
             StringBuilder data = new StringBuilder(scanner.next());
             int index = data.indexOf("%");
             int place = Integer.parseInt(data.substring(index + 1, data.length()));
-            String name = data.substring(0, index).toLowerCase();
+            String name = data.substring(0, index);
             names[place] = name;
         }
         return names;

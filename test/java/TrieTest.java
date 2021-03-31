@@ -35,7 +35,7 @@ public class TrieTest {
             int n = scanner.nextInt();
             String[] result = new String[n];
             for (int i = 0; i < n; i++) {
-                result[i] = scanner.next().toLowerCase();
+                result[i] = scanner.next();
             }
             assertArrayEquals(names, result);
         } catch (IOException ex) {
