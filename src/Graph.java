@@ -102,13 +102,14 @@ class Graph {
             return false;
         }
         visited[value - 'a'] = true;
+        color[value - 'a'] = true;
         for (Node node : children) {
             if (cycleInDirectedGraph(node, visited, color, alphabet)) {
                 return true;
             }
         }
         alphabet.add(value);
-        color[value - 'a'] = true;
+        color[value - 'a'] = false;
         return false;
     }
 
@@ -117,10 +118,9 @@ class Graph {
      * if it is impossible.
      */
     void printAlphabet() {
-        boolean[] visited = new boolean[Constants.ALPHABET_SIZE];
         ArrayList<Character> alphabet = new ArrayList<>();
         for (Node root : nodes.values()) {
-            if (cycleInDirectedGraph(root, visited,
+            if (cycleInDirectedGraph(root, new boolean[Constants.ALPHABET_SIZE],
                     new boolean[Constants.ALPHABET_SIZE],
                     alphabet)) {
                 System.out.println("Impossible");
@@ -130,6 +130,7 @@ class Graph {
         for (int i = alphabet.size() - 1; i >= 0; i--) {
             System.out.print(alphabet.get(i) + " ");
         }
+        boolean[] visited = new boolean[Constants.ALPHABET_SIZE];
         for (int i = 0; i < Constants.ALPHABET_SIZE; i++) {
             if (!visited[i]) {
                 System.out.print((char) (i + 'a') + " ");

@@ -56,9 +56,7 @@ class Trie {
                 if (!nodes.containsKey(ch)) {
                     nodes.put(ch, new Node(ch));
                 }
-                if (!nodes.get(ch).getChildren().contains(nodes.get(c))) {
-                    nodes.get(ch).getChildren().add(nodes.get(c));
-                }
+                nodes.get(ch).getChildren().add(nodes.get(c));
             }
             start.characterBefore = c;
             if (start.children[c - 'a'] == null) {
