@@ -21,17 +21,16 @@ class Trie {
      */
     boolean search(final String key) {
         TrieNode start = root;
-        TrieNode[] children = start.getChildren();
         int n = key.length();
         for (int i = 0; i < n; i++) {
             int c = key.charAt(i) - 'a';
             if (start == null) {
                 return false;
             }
-            if (children[c] == null) {
+            if (start.children[c] == null) {
                 return false;
             }
-            start = children[c];
+            start = start.children[c];
         }
         return !(start == null);
     }
@@ -46,7 +45,6 @@ class Trie {
     void insert(final String key, final Graph graph) {
         Map<Character, Node> nodes = graph.getNodes();
         TrieNode start = root;
-        TrieNode[] children = start.getChildren();
         int n = key.length();
         for (int i = 0; i < n; i++) {
             char c = key.charAt(i);
@@ -61,10 +59,10 @@ class Trie {
                 nodes.get(ch).getChildren().add(nodes.get(c));
             }
             start.characterBefore = c;
-            if (children[c - 'a'] == null) {
-                children[c - 'a'] = new TrieNode();
+            if (start.children[c - 'a'] == null) {
+                start.children[c - 'a'] = new TrieNode();
             }
-            start = children[c - 'a'];
+            start = start.children[c - 'a'];
         }
     }
 }
@@ -89,13 +87,9 @@ class TrieNode {
      */
     char characterBefore = 0;
 
-    public TrieNode[] getChildren() {
-        return children;
-    }
-
     /**
      * Possible next letters for the prefix.
      */
-    private final TrieNode[] children = new TrieNode[Constants.ALPHABET_SIZE];
+    final TrieNode[] children = new TrieNode[Constants.ALPHABET_SIZE];
 }
 

@@ -6,7 +6,7 @@ import java.util.Map;
 
 /**
  * An object that stores information about the order of
- * letters in the formed alphabet.
+ * letters in the generated alphabet.
  */
 class Graph {
 

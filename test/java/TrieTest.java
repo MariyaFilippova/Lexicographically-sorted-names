@@ -28,8 +28,8 @@ public class TrieTest {
 
     @Test
     public void checkParsingOfInput() {
-        try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/names.txt");
-             FileInputStream readerResult = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/result.txt")) {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/names.txt");
+             FileInputStream readerResult = new FileInputStream("./test/resources/result.txt")) {
             String[] names = Parser.parseInput(readerNames);
             Scanner scanner = new Scanner(readerResult);
             int n = scanner.nextInt();
@@ -45,8 +45,8 @@ public class TrieTest {
 
     @Test
     public void checkCorrectInsertionInTrie() {
-        try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/names.txt");
-             FileInputStream readerResult = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/result.txt")) {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/names.txt");
+             FileInputStream readerResult = new FileInputStream("./test/resources/result.txt")) {
             Trie trie = new Trie();
             Graph graph = new Graph();
             String[] names = Parser.parseInput(readerNames);
@@ -70,7 +70,7 @@ public class TrieTest {
 
     @Test
     public void namesWithDifferentFirstLetters() {
-        try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/differentFirstLetters.txt")) {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/differentFirstLetters.txt")) {
             Scanner scanner = new Scanner(readerNames);
             int n = scanner.nextInt();
             String[] result = new String[n];
@@ -97,7 +97,7 @@ public class TrieTest {
 
     @Test
     public void negativeResult() {
-        try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/names.txt")) {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/names.txt")) {
             Trie trie = new Trie();
             Graph graph = new Graph();
             String[] names = Parser.parseInput(readerNames);
@@ -113,7 +113,7 @@ public class TrieTest {
 
     @Test
     public void namesWithSamePrefix() {
-        try (FileInputStream readerNames = new FileInputStream("/Users/mariafilippova/Names-in-article/test/resources/namesWithSamePrefix.txt")) {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/namesWithSamePrefix.txt")) {
             Trie trie = new Trie();
             Graph graph = new Graph();
             Map<Character, Node> nodes = graph.getNodes();
