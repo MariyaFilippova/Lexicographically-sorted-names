@@ -101,6 +101,22 @@ public class TrieTest {
     }
 
     @Test
+    public void cycle() {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/impossible.txt")) {
+            Trie trie = new Trie();
+            Graph graph = new Graph();
+            String[] names = Parser.parseInput(readerNames);
+            for (int i = 0; i < names.length; i++) {
+                trie.insert(names[i], graph);
+            }
+            graph.printAlphabet();
+            assertEquals(testOut.toString(), "Impossible\n");
+        } catch (IOException ex) {
+            System.out.println(ex.getMessage());
+        }
+    }
+
+    @Test
     public void namesWithSamePrefix() {
         try (FileInputStream readerNames = new FileInputStream("./test/resources/namesWithSamePrefix.txt")) {
             Trie trie = new Trie();
