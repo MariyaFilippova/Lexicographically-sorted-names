@@ -36,14 +36,29 @@ class Graph {
         return parents[v] = findParent(parents, parents[v]);
     }
 
-    private boolean cycleInDirectedGraph() {
+    private boolean cycleInDirectedGraph(Node root, boolean[] visited, boolean[] mark) {
+        if (mark[root.value - 'a']) {
+            return true;
+        }
+        if (visited[root.value - 'a']) {
+            return false;
+        }
+        visited[root.value - 'a'] = true;
+        for (Node node: root.children) {
+            if (cycleInDirectedGraph(node, visited, mark) ) {
+                return true;
+            }
+        }
+        mark[root.value - 'a'] = true;
         return false;
     }
 
     void printAlphabet() {
-        if (cycleInDirectedGraph()) {
-            System.out.println("Impossible");
-            return;
+        for (Node root : nodes.values()) {
+            if(cycleInDirectedGraph(root, new boolean[26], new boolean[26])) {
+                System.out.println("Impossible");
+                return;
+            }
         }
         ArrayList<Character> alphabet = new ArrayList<>();
         boolean[] visited = new boolean[26];
