@@ -45,24 +45,16 @@ public class TrieTest {
 
     @Test
     public void checkCorrectInsertionInTrie() {
-        try (FileInputStream readerNames = new FileInputStream("./test/resources/names.txt");
-             FileInputStream readerResult = new FileInputStream("./test/resources/result.txt")) {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/names.txt")) {
             Trie trie = new Trie();
             Graph graph = new Graph();
             String[] names = Parser.parseInput(readerNames);
-            Scanner scanner = new Scanner(readerResult);
-            int n = scanner.nextInt();
-            String[] result = new String[n];
-            for (int i = 0; i < n; i++) {
-                result[i] = scanner.next().toLowerCase();
-            }
             for (int i = 0; i < names.length; i++) {
                 trie.insert(names[i], graph);
             }
             for (int i = 0; i < names.length; i++) {
-                assertTrue(trie.search(result[i]));
+                assertTrue(trie.search(names[i]));
             }
-
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
@@ -71,22 +63,19 @@ public class TrieTest {
     @Test
     public void namesWithDifferentFirstLetters() {
         try (FileInputStream readerNames = new FileInputStream("./test/resources/differentFirstLetters.txt")) {
-            Scanner scanner = new Scanner(readerNames);
-            int n = scanner.nextInt();
-            String[] result = new String[n];
+            String[] names = Parser.parseInput(readerNames);
             StringBuilder firstLetters = new StringBuilder();
-            for (int i = 0; i < n; i++) {
-                result[i] = scanner.next().toLowerCase();
-                firstLetters.append(result[i].charAt(0));
+            for (int i = 0; i < names.length; i++) {
+                firstLetters.append(names[i].charAt(0));
                 firstLetters.append(' ');
             }
             Graph graph = new Graph();
             Map<Character, Node> nodes = graph.getNodes();
             Trie trie = new Trie();
-            for (int i = 0; i < n; i++) {
-                trie.insert(result[i], graph);
+            for (int i = 0; i < names.length; i++) {
+                trie.insert(names[i], graph);
             }
-            assertEquals(nodes.size(), n);
+            assertEquals(nodes.size(), names.length);
             assertEquals(graph.connectedComponents(), 1);
             graph.printAlphabet();
             assertTrue(testOut.toString().contains(firstLetters.toString()));
@@ -121,13 +110,11 @@ public class TrieTest {
             for (int i = 0; i < names.length; i++) {
                 trie.insert(names[i], graph);
             }
-            assertEquals(nodes.size(), 11);
+            assertEquals(nodes.size(), 14);
             assertEquals(graph.connectedComponents(), 3);
             graph.printAlphabet();
         } catch (IOException ex) {
             System.out.println(ex.getMessage());
         }
     }
-
-
 }
