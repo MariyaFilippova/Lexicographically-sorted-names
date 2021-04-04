@@ -1,3 +1,5 @@
+package com.names;
+
 import java.io.InputStream;
 import java.util.Scanner;
 
@@ -5,12 +7,12 @@ import java.util.Scanner;
  * An utility class that parses
  * the input.
  */
-final class Parser {
+public final class Parser {
 
     private Parser() {
     }
 
-    static String[] parseInput(final InputStream in) {
+    public static String[] parseInput(final InputStream in) {
         Scanner scanner = new Scanner(in);
         int n = scanner.nextInt();
         String[] names = new String[n];

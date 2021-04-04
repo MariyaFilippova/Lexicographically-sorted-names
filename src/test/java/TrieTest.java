@@ -1,3 +1,4 @@
+import com.names.*;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +29,7 @@ public class TrieTest {
 
     @Test
     public void checkParsingOfInput() {
-        try (FileInputStream readerNames = new FileInputStream("./test/resources/names.txt");
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/com.names.txt");
              FileInputStream readerResult = new FileInputStream("./test/resources/result.txt")) {
             String[] names = Parser.parseInput(readerNames);
             Scanner scanner = new Scanner(readerResult);
@@ -45,7 +46,7 @@ public class TrieTest {
 
     @Test
     public void checkCorrectInsertionInTrie() {
-        try (FileInputStream readerNames = new FileInputStream("./test/resources/names.txt")) {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/com.names.txt")) {
             Trie trie = new Trie();
             Graph graph = new Graph();
             String[] names = Parser.parseInput(readerNames);
@@ -86,7 +87,7 @@ public class TrieTest {
 
     @Test
     public void negativeResult() {
-        try (FileInputStream readerNames = new FileInputStream("./test/resources/names.txt")) {
+        try (FileInputStream readerNames = new FileInputStream("./test/resources/com.names.txt")) {
             Trie trie = new Trie();
             Graph graph = new Graph();
             String[] names = Parser.parseInput(readerNames);

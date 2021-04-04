@@ -1,16 +1,18 @@
+package com.names;
+
 import java.util.Map;
 
 /**
  * Prefix tree.
  */
-class Trie {
+public class Trie {
 
     /**
      * Entry point to trie.
      */
     private final TrieNode root;
 
-    Trie() {
+    public Trie() {
         this.root = new TrieNode();
     }
 
@@ -18,7 +20,7 @@ class Trie {
      * @param key word.
      * @return if the word is in the trie.
      */
-    boolean search(final String key) {
+    public boolean search(final String key) {
         TrieNode start = root;
         int n = key.length();
         for (int i = 0; i < n; i++) {
@@ -41,7 +43,7 @@ class Trie {
      * @param graph stores information
      *              about the order of letters.
      */
-    void insert(final String key, final Graph graph) {
+    public void insert(final String key, final Graph graph) {
         Map<Character, Node> nodes = graph.getNodes();
         TrieNode start = root;
         int n = key.length();

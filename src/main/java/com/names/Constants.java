@@ -1,4 +1,6 @@
-final class Constants {
+package com.names;
+
+public final class Constants {
 
     private Constants() {
     }

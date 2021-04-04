@@ -1,3 +1,5 @@
+package com.names;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
@@ -7,7 +9,7 @@ import java.util.Map;
  * An object that stores information about the order of
  * letters in the generated alphabet.
  */
-class Graph {
+public class Graph {
 
     /**
      * Maps char to node in the graph.
@@ -18,14 +20,14 @@ class Graph {
         return nodes;
     }
 
-    Graph() {
+    public Graph() {
         nodes = new HashMap<>();
     }
 
     /**
      * @return the number of connected components in the graph.
      */
-    int connectedComponents() {
+    public int connectedComponents() {
         int components = nodes.size();
         int[] parents = new int[Constants.ALPHABET_SIZE];
         for (int i = 0; i < parents.length; i++) {
@@ -116,7 +118,7 @@ class Graph {
      * Prints the alphabet or a error message
      * if it is impossible.
      */
-    void printAlphabet() {
+    public void printAlphabet() {
         ArrayList<Character> alphabet = new ArrayList<>();
         for (Node root : nodes.values()) {
             if (cycleInDirectedGraph(root, new boolean[Constants.ALPHABET_SIZE],
@@ -135,36 +137,5 @@ class Graph {
                 System.out.print((char) (i + 'a') + " ");
             }
         }
-    }
-}
-
-/**
- * An object that represents a single letter.
- */
-class Node {
-
-    /**
-     * Letter.
-     */
-    private final char value;
-
-    public char getValue() {
-        return value;
-    }
-
-    /**
-     * Nodes corresponding to the letters
-     * that should be after current
-     * in the generated alphabet.
-     */
-    private final ArrayList<Node> children;
-
-    public ArrayList<Node> getChildren() {
-        return children;
-    }
-
-    Node(char character) {
-        value = character;
-        children = new ArrayList<>();
     }
 }
